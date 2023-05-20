@@ -24,6 +24,11 @@ public class AuthenticationController {
         return "index.html";
     }
 
+    @GetMapping("/protected")
+    public String getProtectedPage() {
+        return "protected.html";
+    }
+
     @GetMapping("/register")
     public ModelAndView getRegisterPage(){
         RegisterDTO registerDTO = new RegisterDTO();
