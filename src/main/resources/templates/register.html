@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+<h1>Hello in Board games World!</h1>
+<form action="/create-customer" method="post">
+    <label>Add email (login)</label>
+    <input type="text" th:field="${registerDTO.customerEmail}">
+    <br>
+    <label>Add password</label>
+    <input type="password" th:field="${registerDTO.password1}">
+    <br>
+    <label>Repeat password</label>
+    <input type="password" th:field="${registerDTO.password2}">
+    <br>
+    <button type="submit">Register</button>
+</form>
+</body>
+</html>
