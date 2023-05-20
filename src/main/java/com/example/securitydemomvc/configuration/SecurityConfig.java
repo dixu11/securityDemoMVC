@@ -1,12 +1,13 @@
 package com.example.securitydemomvc.configuration;
 
+import com.example.securitydemomvc.service.CustomerService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -14,22 +15,32 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    //przygotowuje narzedzie do kodowania hasla
+    private CustomerService customerService; // wstrzyknięty aby przekazać spring security skąd ma wyciągać użytkowników
+    private PasswordEncoder passwordEncoder;
+    public SecurityConfig(CustomerService customerService, PasswordEncoder passwordEncoder) {
+        this.customerService = customerService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+
+    //wywaliłem to stad zeby uniknac circular dependecy
+ /*   //przygotowuje narzedzie do kodowania hasla
     @Bean
     public PasswordEncoder getEncoder() {
-       return new BCryptPasswordEncoder();
-    }
+        return new BCryptPasswordEncoder();
+    }*/
+
 
     @Bean
     public InMemoryUserDetailsManager getUserDetailsManager() {
         //tworze obiekt uzytkownika
         UserDetails user1 = User.withUsername("admin")
-                .password(getEncoder().encode( "aaa")) // koduje haslo
+                .password(passwordEncoder.encode( "aaa")) // koduje haslo
                 .roles("moderator")
                 .build();
 
         UserDetails user2 = User.withUsername("adam")
-                .password(getEncoder().encode( "bbb")) // koduje haslo
+                .password(passwordEncoder.encode( "bbb")) // koduje haslo
                 .roles("user")
                 .build();
 
@@ -44,7 +55,9 @@ public class SecurityConfig {
         //dają dostęp do consoli i własnego html logowania
         http.csrf().disable();
         http.headers().disable();
-       return http.authorizeHttpRequests( auth ->
+       return http
+               .userDetailsService(customerService) //wskazywanie źródła użytkowników
+               .authorizeHttpRequests( auth ->
                         auth.requestMatchers("/" , "/register","/login","/console").permitAll()
                                // .anyRequest().authenticated()
                                 .anyRequest().hasRole("moderator")
