@@ -14,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+    //przygotowuje narzedzie do kodowania hasla
     @Bean
     public PasswordEncoder getEncoder() {
        return new BCryptPasswordEncoder();
@@ -21,12 +22,20 @@ public class SecurityConfig {
 
     @Bean
     public InMemoryUserDetailsManager getUserDetailsManager() {
+        //tworze obiekt uzytkownika
         UserDetails user1 = User.withUsername("admin")
-                .password(getEncoder().encode( "aaa"))
-                .roles("")
+                .password(getEncoder().encode( "aaa")) // koduje haslo
+                .roles("moderator")
                 .build();
 
-        return new InMemoryUserDetailsManager(user1);
+        UserDetails user2 = User.withUsername("adam")
+                .password(getEncoder().encode( "bbb")) // koduje haslo
+                .roles("user")
+                .build();
+
+
+        //tworzę obiekt zarzadzajacy uzytkownikami
+        return new InMemoryUserDetailsManager(user1,user2);
     }
 
 
@@ -37,7 +46,8 @@ public class SecurityConfig {
         http.headers().disable();
        return http.authorizeHttpRequests( auth ->
                         auth.requestMatchers("/" , "/register","/login","/console").permitAll()
-                                .anyRequest().authenticated()
+                               // .anyRequest().authenticated()
+                                .anyRequest().hasRole("moderator")
                 //jedna gwiazdka = jeden poziom zagnieżdżenia **- wszystko wgłąb
                 )
 //               .form(Customizer.withDefaults())  //w przypadku domyślnej strony logowania
