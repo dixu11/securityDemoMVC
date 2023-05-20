@@ -10,7 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
 
-   /* @Bean
+    @Bean
     public SecurityFilterChain getFilterChain(HttpSecurity http) throws Exception {
         //dają dostęp do consoli i własnego html logowania
         http.csrf().disable();
@@ -20,13 +20,19 @@ public class SecurityConfig {
                                 .anyRequest().authenticated()
                 //jedna gwiazdka = jeden poziom zagnieżdżenia **- wszystko wgłąb
                 )
-               .formLogin(Customizer.withDefaults()) //wczytaj Customizer konfigurujący stronę domyślnie
+//               .form(Customizer.withDefaults())  //w przypadku domyślnej strony logowania
+               .formLogin(
+                       customizer -> customizer.loginPage("/login")//gdzie nasz formularz logowania
+                            //   .successForwardUrl("/") // sprawdzić
+                               .permitAll()
+                                // gdzie idziemy po zalogowaniu
+               ) //wczytaj Customizer konfigurujący stronę domyślnie
                 .build();
-    }*/
+    }
 
 
     //konfiguracja domyślnej strony logowania - klasyczne podejście (depricated!)
-    @Bean
+ /*   @Bean
     public SecurityFilterChain getFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.headers().disable();
@@ -41,7 +47,7 @@ public class SecurityConfig {
                 .permitAll();
         return http.build();
 
-    }
+    }*/
 
 
 

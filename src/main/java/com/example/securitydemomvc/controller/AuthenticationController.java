@@ -49,7 +49,7 @@ public class AuthenticationController {
         return "login";
     }
 
-    @PostMapping("/login")
+   /* @PostMapping("/login")
     public String login ( LoginDTO loginDTO, Model model){
         try{
             customerService.loginCustomer(loginDTO);
@@ -58,5 +58,5 @@ public class AuthenticationController {
             model.addAttribute("message", e.getMessage());
         }
         return "index";
-    }
+    }*/
 }
