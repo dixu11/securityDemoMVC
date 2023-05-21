@@ -44,7 +44,6 @@ public class SecurityConfig {
                 .roles("user")
                 .build();
 
-
         //tworzę obiekt zarzadzajacy uzytkownikami
         return new InMemoryUserDetailsManager(user1,user2);
     }
@@ -58,9 +57,9 @@ public class SecurityConfig {
        return http
                .userDetailsService(customerService) //wskazywanie źródła użytkowników
                .authorizeHttpRequests( auth ->
-                        auth.requestMatchers("/" , "/register","/login","/console").permitAll()
-                               // .anyRequest().authenticated()
-                                .anyRequest().hasRole("moderator")
+                        auth.requestMatchers("/" , "/register","/login","/console", "/create-customer").permitAll()
+                                .anyRequest().authenticated()
+//                                .anyRequest().hasRole("moderator")
                 //jedna gwiazdka = jeden poziom zagnieżdżenia **- wszystko wgłąb
                 )
 //               .form(Customizer.withDefaults())  //w przypadku domyślnej strony logowania

@@ -1,8 +1,6 @@
 package com.example.securitydemomvc.controller;
 
-import com.example.securitydemomvc.dto.LoginDTO;
 import com.example.securitydemomvc.dto.RegisterDTO;
-import com.example.securitydemomvc.exception.AuthenticationServiceException;
 import com.example.securitydemomvc.service.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +37,7 @@ public class AuthenticationController {
 
     @PostMapping("/create-customer")
     public ModelAndView createCustomer (@ModelAttribute("registerDTO") RegisterDTO registerDTO){
+        System.out.println("!!!!!"+registerDTO);
         ModelAndView modelAndView = new ModelAndView("index.html");
         customerService.createCustomer(registerDTO);
         return modelAndView;
@@ -49,7 +48,7 @@ public class AuthenticationController {
         return "login";
     }
 
-   /* @PostMapping("/login")
+/*    @PostMapping("/login")
     public String login ( LoginDTO loginDTO, Model model){
         try{
             customerService.loginCustomer(loginDTO);

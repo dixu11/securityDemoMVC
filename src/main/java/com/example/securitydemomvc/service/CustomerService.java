@@ -1,6 +1,5 @@
 package com.example.securitydemomvc.service;
 
-import com.example.securitydemomvc.dto.LoginDTO;
 import com.example.securitydemomvc.dto.RegisterDTO;
 import com.example.securitydemomvc.entity.Customer;
 import com.example.securitydemomvc.exception.AuthenticationServiceException;
@@ -33,22 +32,17 @@ public class CustomerService  implements UserDetailsService { //WYMAGANE ABY SPR
         customerRepository.save(customer);
     }
 
-    public void loginCustomer (LoginDTO loginDTO){
-        String erreMessage = "Wrong data";
-        Customer customer = customerRepository.findByCustomerEmail(loginDTO.getCustomerEmail())
-                .orElseThrow(()-> new AuthenticationServiceException(erreMessage));
-        System.out.println("zalogowany!");
-    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("Wyszukuję...");
         Customer customer = customerRepository.findByCustomerEmail(username).orElseThrow(() -> new UsernameNotFoundException("not found"));
-        return new User(customer.getCustomerEmail(), customer.getPassword(), new ArrayList<>());
+        System.out.println("Logujesz się na: "+ customer);
+       // return new User(customer.getCustomerEmail(), customer.getPassword(), new ArrayList<>());
 
             //powoduje circular!!
-         /* return User.withUsername(customer.getCustomerEmail())
+          return User.withUsername(customer.getCustomerEmail())
                 .password(customer.getPassword())
                 .roles("moderator") // podstawianie przechowywanej roli z bazy danych zrobić
-                .build();*/
+                .build();
     }
 }
