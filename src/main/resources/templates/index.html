@@ -8,9 +8,14 @@
 <h1>Board games home page</h1>
 <h3 th:text="${message}"></h3>
 <h2>Choose what to do</h2> <br>
-<a href="/register">Register</a><br>
-<a href="/login">Login</a><br>
-<a href="/protected">Protected</a><br>
+<h3 th:text="${authenticated}"></h3>
+<a th:if="${!authenticated}" href="/register">Register</a><br>
+<a th:if="${!authenticated}" href="/login">Login</a><br>
+<a th:if="${authenticated}" href="/protected">Protected</a><br>
 
 </body>
 </html>
+
+
+
+

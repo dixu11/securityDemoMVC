@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -52,8 +53,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain getFilterChain(HttpSecurity http) throws Exception {
         //dają dostęp do consoli i własnego html logowania
-        http.csrf().disable();
-        http.headers().disable();
+        http.csrf(customizer -> customizer.disable());
+        http.headers(customizer -> customizer.disable());
        return http
                .userDetailsService(customerService) //wskazywanie źródła użytkowników
                .authorizeHttpRequests( auth ->
